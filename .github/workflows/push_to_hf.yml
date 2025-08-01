@@ -1,0 +1,27 @@
+name: Deploy to Hugging Face Spaces
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout full repository history
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git identity
+        run: |
+          git config --global user.email "saadtoorx@example.com"
+          git config --global user.name "saadtoorx"
+
+      - name: Push to Hugging Face
+        run: |
+          git remote remove hf || true
+          git remote add hf https://saadtoorx:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/saadtoorx/multi-agent-customer-support-automation
+          git push hf main --force
